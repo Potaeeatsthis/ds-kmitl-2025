@@ -1,36 +1,60 @@
-inp = input("Enter max of car / car in soi / operation : ").split('/')
+class Calculator :
+    def __init__(self) :
+        self.stack = []
 
-max_slot = int(inp[0].strip())
+    def run(self, instructions) :
+        it = iter(instructions)
 
-car_in_soi = [int(i) for i in inp[1].split(',')]
+        for i in it :
+            if i == "PSH" :
+                value = int(next(it))
+                self.stack.append(value)
+                continue
 
-operation = inp[2].strip().split()
-command = operation[0]
-car_to_act = int(operation[1])
+            elif i == "POP" :
+                if self.stack :
+                    self.stack.pop()
+                continue
 
-if command == "arrive" :
-	if car_to_act in car_in_soi :
-		print(f"car {car_to_act} already in soi")
-	elif len(car_in_soi) >= max_slot :
-		print(f"car {car_to_act} cannot arrive : Soi Full")
-	else :
-		car_in_soi.append(car_to_act)
-		print(f"car {car_to_act} arrive! : Add Car {car_to_act}")
+            elif i == "DUP" :
+                if self.stack :
+                    self.stack.append(self.stack[-1])
+                continue
 
-elif command == "depart" :
-	if car_to_act not in car_in_soi :
-		print(f"car {car_to_act} cannot depart : Dont Have Car {car_to_act}")
-	else :
-		temp = []
-		while car_in_soi :
-			popped_car = car_in_soi.pop()
-			if popped_car == car_to_act :
-				print(f"car {car_to_act} depart ! : Car {car_to_act} was remove")
-				break
-			else :
-				temp.append(popped_car)
+            elif i in "+-*/" :
+                a = self.stack.pop()
+                b = self.stack.pop()
 
-		while temp :
-			car_in_soi.append(temp.pop())
-				
-print(car_in_soi)
+                if i == '+' :
+                    self.stack.append(a + b)
+
+                elif i == '-' :
+                    self.stack.append(a - b)
+
+                elif i == '*' :
+                    self.stack.append(a * b)
+
+                elif i == '/' :
+                    self.stack.append(int(a / b))
+                continue
+
+            try :
+                self.stack.append(int(i))
+            except :
+                print(f"Invalid instruction: {instruc}")
+                return None
+
+        if len(self.stack) == 1 :
+            return self.stack[0]
+        elif not self.stack :
+            return 0
+        else :
+            return self.stack[-1]
+
+print("* Stack Calculator *")
+inp = input("Enter arguments : ").split()
+calc = Calculator()
+result = calc.run(inp)
+
+if result is not None :
+    print(result)
