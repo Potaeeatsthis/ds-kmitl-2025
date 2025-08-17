@@ -1,6 +1,6 @@
 class Queue :
     def __init__(self) :
-        self.items = [] 
+        self.items = []
 
     def enqueue(self, item) :
         self.items.append(item)
@@ -20,48 +20,46 @@ class Queue :
         return str(self.items)
 
 main = Queue()
-cashier_1 = Queue()
-cashier_2 = Queue()
+cashier1 = Queue()
+cashier2 = Queue()
 
 inp = input("Enter people : ")
 
-for i in inp : 
-    main.enqueue(i) 
+for i in inp :
+    main.enqueue(i)
 
-minute = 0 
+minute = 0
 
 cashier_1_timer = 0
 cashier_2_timer = 0
 
-max_queue = 5 
+cashier_1_max = 5
 
 while True :
     minute += 1
 
-    if not cashier_1.is_empty() :
-        cashier_1_timer += 1 
+    if not cashier1.is_empty() :
+        cashier_1_timer += 1
         if cashier_1_timer % 3 == 0 :
-            cashier_1.dequeue()
-    elif cashier_1.is_empty() :
-        cashier_1_timer = 0
+            cashier1.dequeue()
+            if cashier1.is_empty() :
+                cashier_2_timer = 0
 
-    if not cashier_2.is_empty() :
-        cashier_2_timer += 1 
-        if cashier_1_timer % 2 == 0 :
-            cashier_2.dequeue()
-    elif cashier_2.is_empty() :
-        cashier_2_timer = 0
+    if not cashier2.is_empty() :
+        cashier_2_timer += 1
+        if cashier_2_timer % 2 == 0 :
+            cashier2.dequeue()
+            if cashier2.is_empty() :
+                cashier_2_timer = 0
 
     if not main.is_empty() :
-        if cashier_1.size() < max_queue :
-            move_to_1 = main.dequeue()
-            cashier_1.enqueue(move_to_1)
+        if cashier1.size() < cashier_1_max :
+            cashier1.enqueue(main.dequeue())
         else :
-            move_to_2 = main.dequeue()
-            cashier_2.enqueue(move_to_2)
+            cashier2.enqueue(main.dequeue())
 
     if main.is_empty() :
-        print(f"{minute} {main} {cashier_1} {cashier_2}")
-        break 
+        print(f"{minute} {main} {cashier1} {cashier2}")
+        break
 
-    print(f"{minute} {main} {cashier_1} {cashier_2}")
+    print(f"{minute} {main} {cashier1} {cashier2}")

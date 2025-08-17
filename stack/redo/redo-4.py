@@ -5,42 +5,38 @@ class Calculator :
     def run(self, instructions) :
         it = iter(instructions)
 
-        for i in it :
-            if i == "PSH" :
-                value = int(next(it))
-                self.stack.append(value)
+        for instruc in it :
+            if instruc == "PSH" :
+                self.stack.append(int(next(it)))
                 continue
 
-            elif i == "POP" :
-                if self.stack :
-                    self.stack.pop()
-                continue
-
-            elif i == "DUP" :
+            elif instruc == "DUP" :
                 if self.stack :
                     self.stack.append(self.stack[-1])
                 continue
 
-            elif i in "+-*/" :
+            elif instruc == "POP" :
+                if self.stack :
+                    self.stack.pop()
+                continue
+
+            elif instruc in "+-*/" :
                 a = self.stack.pop()
                 b = self.stack.pop()
 
-                if i == '+' :
+                if instruc == '+' :
                     self.stack.append(a + b)
-
-                elif i == '-' :
+                elif instruc == '-' :
                     self.stack.append(a - b)
-
-                elif i == '*' :
+                elif instruc == '*' :
                     self.stack.append(a * b)
-
-                elif i == '/' :
+                elif instruc == '/' :
                     self.stack.append(int(a / b))
                 continue
 
             try :
-                self.stack.append(int(i))
-            except :
+                self.stack.append(int(instruc))
+            except ValueError :
                 print(f"Invalid instruction: {instruc}")
                 return None
 
@@ -52,9 +48,8 @@ class Calculator :
             return self.stack[-1]
 
 print("* Stack Calculator *")
-inp = input("Enter arguments : ").split()
+input = input("Enter arguments : ").split()
 calc = Calculator()
-result = calc.run(inp)
-
-if result is not None :
+result = calc.run(input)
+if result is not None:
     print(result)

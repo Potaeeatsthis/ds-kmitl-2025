@@ -1,23 +1,23 @@
-inp = input("Enter Input : ").split(',')
+inp = input("Enter Input : ")
 
 queue = []
 
-for i in inp :
+command = inp.split(',')
 
-    part = i.split(' ')
+for i in command :
+    part = i.split()
 
     if part[0] == 'E' :
         queue.append(part[1])
         print(f"Add {part[1]} index is {len(queue)-1}")
 
-    if part[0] == 'D' :
+    elif part[0] == 'D' :
         if not queue :
-            print(-1)
+            print("-1")
         else :
-            popped = queue.pop(0)
-            print(f"Pop {popped} size in queue is {len(queue)}")
+            print(f"Pop {queue.pop(0)} size in queue is {len(queue)}")
 
-if not queue :
-    print("Empty")
-else :
+if queue :
     print(f"Number in Queue is :  {queue}")
+else :
+    print("Empty")
