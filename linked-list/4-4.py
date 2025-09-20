@@ -7,11 +7,15 @@ class TextEditor() :
         commands = commands_str.split(',')
 
         for i in commands :
-            parts = i.split()
+            parts = i.strip()
             command = parts[0]
+            argument = None
 
-            if command == 'I' and len(parts) > 1 :
-                self.insert(parts[1])
+            if len(parts) > 2 and parts[1] == ' ':
+                argument = parts[2:]
+
+            if command == 'I' and argument is not None:
+                self.insert(argument)
             elif command == 'L' :
                 self.left()
             elif command == 'R' :
@@ -21,24 +25,34 @@ class TextEditor() :
             elif command == 'D' :
                 self.delete()
 
-        self.display()
-
     def insert(self, word) :
-        for i in word :
-            self.text.insert(self.cursor, i)
+        self.text.insert(self.cursor, word)
+        self.cursor += 1
+
+    def left(self) :
+        if self.cursor > 0 :
+            self.cursor -= 1
+
+    def right(self) :
+        if self.cursor < len(self.text) :
             self.cursor += 1
 
+    def backspace(self) :
+        if self.cursor > 0 :
+            self.cursor -= 1
+            self.text.pop(self.cursor)
+
+    def delete(self) :
+        if self.cursor < len(self.text) :
+            self.text.pop(self.cursor)
+
     def display(self) :
-        final_text = ''.join(self.text)
-
-        output = list(final_text)
-
-        output.insert(self.cursor, '|')
-
-        print(''.join(output), end = ' ')
+        output_list = self.text[:]
+        output_list.insert(self.cursor, '|')
+        print(' '.join(output_list))
 
 editor = TextEditor()
 
 inp = input("Enter Input : ")
 editor.process_commands(inp)
-
+editor.display()
