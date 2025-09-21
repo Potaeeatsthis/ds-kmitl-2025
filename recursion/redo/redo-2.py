@@ -1,17 +1,16 @@
 def len_str(mystr) :
     if mystr == '' :
         return 0
-    else :
-        return 1 + len_str(mystr[:-1])
+    return 1 + len_str(mystr[1:])
 
-def sep(txt, index=1) :
-    if txt == '' :
+def sep(mystr, index = 1) :
+    if mystr == '' :
         return ''
 
     if index % 2 == 1 :
-        return txt[0] + '*' + sep(txt[1:], index + 1)
+        return mystr[0] + '*' + sep(mystr[1:], index + 1)
     else :
-        return txt[0] + '~' + sep(txt[1:], index + 1)
+        return mystr[0] + '~' + sep(mystr[1:], index + 1)
 
 print(" *** Length of string (Recursion) ***")
 input = input("Enter Input : ")
